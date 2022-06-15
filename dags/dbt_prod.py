@@ -14,7 +14,7 @@ default_args = {
   'depends_on_past': False,
   'email': ['baikulov.ant@gmail.com'],
   'dir': '/opt/airflow/dags/scripts/dbt',
-  'start_date': datetime(2019, 1, 1, 17, 30),
+  'start_date': datetime(2022, 6, 1, 17, 30),
 }
 
 dag = DAG(
@@ -29,7 +29,7 @@ dbt_test_sources = DbtTestOperator(
   dag=dag,
   target="dev",
   select="source:*",
-  vars={'execution_date': "'{{ macros.ds_add(ds, -1) }}'"},  # передаём дату(дата выполнения - 1) внутрь dbt
+  #vars={'execution_date': "'{{ macros.ds_add(ds, -1) }}'"},  # передаём дату(дата выполнения - 1) внутрь dbt
   dbt_bin='/home/airflow/.local/bin/dbt',
   profiles_dir='/opt/airflow/dags/scripts/dbt/',
   dir='/opt/airflow/dags/scripts/dbt/',
