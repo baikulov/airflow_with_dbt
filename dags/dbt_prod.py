@@ -13,7 +13,7 @@ default_args = {
   'owner': 'Baikulov',
   'depends_on_past': False,
   'email': ['baikulov.ant@gmail.com'],
-  'dir': '/opt/airflow/dags/scripts/cable_dbt_clickhouse',
+  'dir': '/opt/airflow/dags/scripts/dbt',
   'start_date': datetime(2019, 1, 1, 17, 30),
 }
 
@@ -31,8 +31,8 @@ dbt_test_sources = DbtTestOperator(
   select="source:*",
   vars={'execution_date': "'{{ macros.ds_add(ds, -1) }}'"},  # передаём дату(дата выполнения - 1) внутрь dbt
   dbt_bin='/home/airflow/.local/bin/dbt',
-  profiles_dir='/opt/airflow/dags/scripts/cable_dbt_clickhouse/',
-  dir='/opt/airflow/dags/scripts/cable_dbt_clickhouse/',
+  profiles_dir='/opt/airflow/dags/scripts/dbt/',
+  dir='/opt/airflow/dags/scripts/dbt/',
   on_failure_callback=telegramm_alert,
 )
 
@@ -43,8 +43,8 @@ dbt_run_dev = DbtRunOperator(
   target="dev",
   vars={'execution_date': "'{{ macros.ds_add(ds, -1) }}'"},  # передаём дату(дата выполнения - 1) внутрь dbt
   dbt_bin='/home/airflow/.local/bin/dbt',
-  profiles_dir='/opt/airflow/dags/scripts/cable_dbt_clickhouse/',
-  dir='/opt/airflow/dags/scripts/cable_dbt_clickhouse/',
+  profiles_dir='/opt/airflow/dags/scripts/dbt/',
+  dir='/opt/airflow/dags/scripts/dbt/',
   on_failure_callback=telegramm_alert,
 )
 
@@ -52,7 +52,7 @@ dbt_test_dev = DbtTestOperator(
   task_id='dbt_test_dev',
   dag=dag,
   target="dev",
-  profiles_dir='/opt/airflow/dags/scripts/cable_dbt_clickhouse/',
+  profiles_dir='/opt/airflow/dags/scripts/dbt/',
   on_failure_callback=telegramm_alert,
 )
 
@@ -63,8 +63,8 @@ dbt_run_prod = DbtRunOperator(
   select="tag:presets",
   vars={'execution_date': "'{{ macros.ds_add(ds, -1) }}'"},  # передаём дату(дата выполнения - 1) внутрь dbt
   dbt_bin='/home/airflow/.local/bin/dbt',
-  profiles_dir='/opt/airflow/dags/scripts/cable_dbt_clickhouse/',
-  dir='/opt/airflow/dags/scripts/cable_dbt_clickhouse/',
+  profiles_dir='/opt/airflow/dags/scripts/dbt/',
+  dir='/opt/airflow/dags/scripts/dbt/',
   on_failure_callback=telegramm_alert,
 )
 
