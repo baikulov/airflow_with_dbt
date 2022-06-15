@@ -50,9 +50,25 @@ sudo chmod +x /usr/local/bin/docker-compose
 ```bash
 git clone https://github.com/baikulov/airflow_with_dbt.git
 ```
-3. Указываем учётные данные для подключения в файле .env
-4. Клонируем свой проект dbt в папку dags/scripts/dbt
-5. Запускаем
+## Указываем учётные данные для подключения в файле .env
+```bash
+AIRFLOW_UID=1000
+DBT_SCHEMA_DEV=<clickhouse_dev>
+DBT_SCHEMA_PROD=<clickhouse_prod>
+DBT_HOST=<clickhouse_host>
+DBT_PORT=<clickhouse_port>
+DBT_USER=<clickhouse_user>
+DBT_PASSWORD=<clickhouse_password>
+DBT_PROFILES_DIR=.
+TELEGRAM_TOKEN=<telegram_bot_token>
+TELEGRAM_CHAT_ID=<telegram_chat_id>
+```
+## Клонируем свой проект dbt в папку dags/scripts/dbt
+```bash
+cd dags/scripts/
+git clone https://github.com/baikulov/dbt.git
+```
+## Запускаем airflow
 ```bash
  docker-compose up -d
  ```
