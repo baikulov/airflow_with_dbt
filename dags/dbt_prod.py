@@ -2,6 +2,7 @@ from airflow import DAG
 from scripts.telegram_webhook import telegramm_alert
 from airflow.utils.dates import days_ago
 from datetime import datetime
+from airflow.operators.bash import BashOperator
 from airflow_dbt.operators.dbt_operator import (
      DbtSeedOperator,
      DbtSnapshotOperator,
@@ -22,6 +23,11 @@ dag = DAG(
   default_args=default_args,
   schedule_interval='@daily',
   max_active_runs=1,
+)
+
+dbt_pull_repo = BashOperator(
+    task_id='pull_dbt_project',
+    bash_command='cd /opt/airflow/dags/scripts/dbt/ && git pull',
 )
 
 dbt_test_sources = DbtTestOperator(
@@ -68,4 +74,4 @@ dbt_run_prod = DbtRunOperator(
   on_failure_callback=telegramm_alert,
 )
 
-dbt_test_sources >> dbt_run_dev >> dbt_test_dev >> dbt_run_prod
+dbt_pull_repo >> dbt_test_sources >> dbt_run_dev >> dbt_test_dev >> dbt_run_prod
